@@ -51,18 +51,17 @@ public class AICannon : MonoBehaviour {
 			pauseFrames = (int)Random.Range (20, 40);
 		} else if (stage == 3) {
 			if (pauseFrames == 0) {
-				newEnemy ();
 				stage = 0;
 			}
 			pauseFrames--;
 		}
 	}
 
-	void newEnemy() {
-		float vertical = 1f;
+	public void newEnemy() {
+		float vertical = 3f;
 		float horizontal = 0.3f;
-		float xChange = Random.Range (-1*vertical, vertical);
-		float yChange = Random.Range (-1*horizontal, horizontal);
+		float yChange = Random.Range (-1*vertical, vertical);
+		float xChange = Random.Range (-1*horizontal, horizontal);
 		transform.position = new Vector2(transform.position.x + xChange, transform.position.y + yChange);
 		Vector2 oldOwnCannonBase = ownCannonBase.transform.position;
 		ownCannonBase.transform.position = new Vector2(oldOwnCannonBase.x + xChange, oldOwnCannonBase.y + yChange);

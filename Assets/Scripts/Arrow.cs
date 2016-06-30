@@ -5,6 +5,7 @@ public class Arrow : MonoBehaviour {
 	bool collided = false;
 	bool destroy = false;
 	int destroyTime = 80;
+	public AICannon aiCannon;
 
 	// Use this for initialization
 	void Start () {
@@ -37,6 +38,10 @@ public class Arrow : MonoBehaviour {
 		Debug.Log ("Collided with " + coll.gameObject.name);
 		string name = coll.gameObject.name;
 		destroy = true;
+		makeNewEnemy ();
+	}
 
+	void makeNewEnemy() {
+		aiCannon.newEnemy ();
 	}
 }
