@@ -14,12 +14,16 @@ public class AICannon : MonoBehaviour {
 	float minAngle = -15, maxAngle = 115;
 	int stage = 0;
 	int moveFrames = 100, pauseFrames = 30;
+	float right, top, bottom;
 
 	// Use this for initialization
 	void Start () {
 		stage = 0;
 		endX = startX + Random.Range (0.5f, 140);
 		endY = startY - Random.Range (0.5f, 140);
+		right = Camera.main.ScreenToWorldPoint (new Vector3(Screen.width, 0, 0)).x;
+		top = Camera.main.ScreenToWorldPoint (new Vector3(0, Screen.height, 0)).y;
+		bottom = Camera.main.ScreenToWorldPoint (new Vector3(0, 0, 0)).y;
 	}
 	
 	// Update is called once per frame
@@ -52,16 +56,21 @@ public class AICannon : MonoBehaviour {
 		} else if (stage == 3) {
 			if (pauseFrames == 0) {
 				stage = 0;
+//				newEnemy ();
 			}
 			pauseFrames--;
 		}
 	}
 
 	public void newEnemy() {
-		float vertical = 3f;
-		float horizontal = 0.3f;
-		float yChange = Random.Range (-1*vertical, vertical);
-		float xChange = Random.Range (-1*horizontal, horizontal);
+		float boundary = 0.5f;
+		float verticalMax = (top - transform.position.y) * boundary;
+		float verticalMin = (bottom - transform.position.y) * boundary;
+		float horizontalMax = (right - transform.position.x) * boundary;
+		float horizontalMin = (right*0.5f - transform.position.x) * boundary;
+		Debug.Log (horizontalMin + " " + horizontalMax + " " + right);
+		float yChange = Random.Range (verticalMin, verticalMax);
+		float xChange = Random.Range (horizontalMin, horizontalMax);
 		transform.position = new Vector2(transform.position.x + xChange, transform.position.y + yChange);
 		Vector2 oldOwnCannonBase = ownCannonBase.transform.position;
 		ownCannonBase.transform.position = new Vector2(oldOwnCannonBase.x + xChange, oldOwnCannonBase.y + yChange);
@@ -84,7 +93,6 @@ public class AICannon : MonoBehaviour {
 		Vector2 dir = new Vector2 (startX - endX, startY - endY);
 
 		Vector2 touchLength = new Vector2 (endX - startX, endY - startY);
-		Debug.Log (touchLength.magnitude);
 		newArrow.velocity = dir.normalized * arrowSpeed * touchLength.magnitude/140;
 	}
 

@@ -54,7 +54,7 @@ public class Cannon : MonoBehaviour {
 		Vector2 dir = new Vector2 (Mathf.Cos (angle), Mathf.Sin (angle));
 
 		Vector2 touchLength = new Vector2 (endX - startX, endY - startY);
-		Debug.Log (touchLength.magnitude);
+//		Debug.Log (touchLength.magnitude);
 		newArrow.velocity = dir.normalized * arrowSpeed * touchLength.magnitude/140;
 	}
 
