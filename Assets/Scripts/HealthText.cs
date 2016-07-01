@@ -6,6 +6,7 @@ public class HealthText : MonoBehaviour {
 	int cur = 100;
 	int reduceByQty = 0;
 	bool reduce = false;
+	public AICannon aiCannon;
 
 	// Use this for initialization
 	void Start () {
@@ -17,12 +18,16 @@ public class HealthText : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (reduce && cur >= 0) {
+		if (reduce && cur > 0) {
 			cur--;
 			reduceByQty--;
 			healthText.text = "Health: " + cur + "%";
 			if (reduceByQty == 0) {
 				reduce = false;
+			}
+			if (cur == 0) {
+				makeNewEnemy ();
+				resetHealth ();
 			}
 		}
 	}
@@ -30,5 +35,15 @@ public class HealthText : MonoBehaviour {
 	public void reduceBy(int num) {
 		reduceByQty = num;
 		reduce = true;
+	}
+
+	void makeNewEnemy() {
+		aiCannon.newEnemy ();
+	}
+
+	void resetHealth() {
+		cur = 100;
+		reduce = false;
+		Start ();
 	}
 }

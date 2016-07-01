@@ -6,17 +6,19 @@ public class AICannon : MonoBehaviour {
 	public GameObject userCannonBase;
 	public GameObject ownCannonBase;
 	public GameObject ownHuman;
+	public GUIText scoreText;
+	public bool directionRight = false;
+	public Rigidbody2D arrow;
 	float startX, startY;
 	float curX, curY;
 	float endX, endY;
-	public Rigidbody2D arrow;
 	float arrowSpeed = 18.0f;
-	public bool directionRight = false;
 	float minAngle = -15, maxAngle = 115;
 	int stage = 0;
 	int moveFrames = 100, pauseFrames = 30;
 	float right, top, bottom;
 	List<float> missList;
+	int score = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -86,6 +88,9 @@ public class AICannon : MonoBehaviour {
 		ownCannonBase.transform.position = new Vector2(oldOwnCannonBase.x + xChange, oldOwnCannonBase.y + yChange);
 		Vector2 oldOwnHuman = ownHuman.transform.position;
 		ownHuman.transform.position = new Vector2(oldOwnHuman.x + xChange, oldOwnHuman.y + yChange);
+
+		score++;
+		scoreText.text = "" + score;
 	}
 
 	public void newMiss(float amount) {

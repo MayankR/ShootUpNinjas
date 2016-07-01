@@ -11,6 +11,7 @@ public class Arrow : MonoBehaviour {
 	bool givenMiss = false;
 	public bool isEnemyArrow = false;
 	int offScreenTime = 200;
+	bool damageDone = false;
 
 	// Use this for initialization
 	void Start () {
@@ -59,16 +60,19 @@ public class Arrow : MonoBehaviour {
 		Debug.Log ("Collided with " + coll.gameObject.name);
 		destroy = true;
 		string name = coll.gameObject.name;
-		if (!collided) {
+		if (!damageDone) {
 			if (name == "head") {
 				HealthText hText = aiCannonBase.GetComponent<HealthText> ();
 				hText.reduceBy (70);
+				damageDone = true;
 			} else if (name == "body") {
 				HealthText hText = aiCannonBase.GetComponent<HealthText> ();
 				hText.reduceBy (50);
+				damageDone = true;
 			} else if (name == "leg1" || name == "leg2") {
 				HealthText hText = aiCannonBase.GetComponent<HealthText> ();
 				hText.reduceBy (40);
+				damageDone = true;
 			}
 		}
 		collided = true;
