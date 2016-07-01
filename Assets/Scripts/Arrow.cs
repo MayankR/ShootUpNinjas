@@ -6,6 +6,7 @@ public class Arrow : MonoBehaviour {
 	bool destroy = false;
 	int destroyTime = 80;
 	public AICannon aiCannon;
+	public GameObject aiCannonBase;
 	public GameObject userCannonBase;
 	bool givenMiss = false;
 	public bool isEnemyArrow = false;
@@ -41,7 +42,6 @@ public class Arrow : MonoBehaviour {
 			if (ownY <= targetY + tolerance && ownY >= targetY - tolerance && curVelocity.y < 0) {
 				aiCannon.newMiss (transform.position.x - userCannonBase.transform.position.x);
 				givenMiss = true;
-//				Debug.Log ("Missed by: " + (transform.position.x - userCannonBase.transform.position.x));
 			}
 		}
 		Vector3 ownPos = Camera.main.WorldToScreenPoint (transform.position);
@@ -56,11 +56,22 @@ public class Arrow : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
-		collided = true;
 		Debug.Log ("Collided with " + coll.gameObject.name);
-		string name = coll.gameObject.name;
 		destroy = true;
-		makeNewEnemy ();
+		string name = coll.gameObject.name;
+		if (!collided) {
+			if (name == "head") {
+				HealthText hText = aiCannonBase.GetComponent<HealthText> ();
+				hText.reduceBy (70);
+			} else if (name == "body") {
+				HealthText hText = aiCannonBase.GetComponent<HealthText> ();
+				hText.reduceBy (50);
+			} else if (name == "leg1" || name == "leg2") {
+				HealthText hText = aiCannonBase.GetComponent<HealthText> ();
+				hText.reduceBy (40);
+			}
+		}
+		collided = true;
 	}
 
 	void makeNewEnemy() {
