@@ -6,6 +6,9 @@ public class Arrow : MonoBehaviour {
 	bool destroy = false;
 	int destroyTime = 80;
 	public AICannon aiCannon;
+	public GameObject userCannonBase;
+	bool givenMiss = false;
+	public bool isEnemyArrow = false;
 
 	// Use this for initialization
 	void Start () {
@@ -29,6 +32,16 @@ public class Arrow : MonoBehaviour {
 			if (destroyTime == 0) {
 				Destroy (gameObject);
 
+			}
+		}
+		float ownY = transform.position.y;
+		float targetY = userCannonBase.transform.position.y;
+		float tolerance = 0.3f;
+		if (!givenMiss && isEnemyArrow) {
+			if (ownY <= targetY + tolerance && ownY >= targetY - tolerance && curVelocity.y < 0) {
+				aiCannon.newMiss (transform.position.x - userCannonBase.transform.position.x);
+				givenMiss = true;
+				Debug.Log ("Missed by: " + (transform.position.x - userCannonBase.transform.position.x));
 			}
 		}
 	}

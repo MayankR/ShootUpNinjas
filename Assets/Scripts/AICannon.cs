@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AICannon : MonoBehaviour {
 	public GameObject userCannonBase;
@@ -15,6 +16,7 @@ public class AICannon : MonoBehaviour {
 	int stage = 0;
 	int moveFrames = 100, pauseFrames = 30;
 	float right, top, bottom;
+	List<float> missList;
 
 	// Use this for initialization
 	void Start () {
@@ -24,6 +26,7 @@ public class AICannon : MonoBehaviour {
 		right = Camera.main.ScreenToWorldPoint (new Vector3(Screen.width, 0, 0)).x;
 		top = Camera.main.ScreenToWorldPoint (new Vector3(0, Screen.height, 0)).y;
 		bottom = Camera.main.ScreenToWorldPoint (new Vector3(0, 0, 0)).y;
+		missList = new List<float> ();
 	}
 	
 	// Update is called once per frame
@@ -56,7 +59,6 @@ public class AICannon : MonoBehaviour {
 		} else if (stage == 3) {
 			if (pauseFrames == 0) {
 				stage = 0;
-//				newEnemy ();
 			}
 			pauseFrames--;
 		}
@@ -78,6 +80,9 @@ public class AICannon : MonoBehaviour {
 		ownHuman.transform.position = new Vector2(oldOwnHuman.x + xChange, oldOwnHuman.y + yChange);
 	}
 
+	public void newMiss(float amount) {
+		missList.Add (amount);
+	}
 
 	void endTouch(float x, float y) {
 		endX = x;
@@ -94,6 +99,9 @@ public class AICannon : MonoBehaviour {
 
 		Vector2 touchLength = new Vector2 (endX - startX, endY - startY);
 		newArrow.velocity = dir.normalized * arrowSpeed * touchLength.magnitude/140;
+
+		Arrow myArrow = newArrow.GetComponent<Arrow>();
+		myArrow.isEnemyArrow = true;
 	}
 
 	void setStartTouch (float x, float y) {
