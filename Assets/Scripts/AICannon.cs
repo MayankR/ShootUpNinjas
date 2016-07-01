@@ -133,6 +133,6 @@ public class AICannon : MonoBehaviour {
 			angle = 179;
 		}
 		transform.eulerAngles = new Vector3 (0, 0, -90 + angle);
-		ownHuman.transform.eulerAngles = new Vector3 (0, 0, 180 + 180 - (180 - angle) / 2);
+		ownHuman.transform.eulerAngles = new Vector3 (0, 0, 180 + 180 - (180 - angle) / 4);
 	}
 }

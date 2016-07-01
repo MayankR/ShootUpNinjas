@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\AICannonBase.cs" />
      <Compile Include="Assets\Scripts\Arrow.cs" />
      <Compile Include="Assets\Scripts\Cannon.cs" />
+     <Compile Include="Assets\Scripts\HealthText.cs" />
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
