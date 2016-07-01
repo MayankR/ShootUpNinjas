@@ -9,6 +9,7 @@ public class Arrow : MonoBehaviour {
 	public GameObject userCannonBase;
 	bool givenMiss = false;
 	public bool isEnemyArrow = false;
+	int offScreenTime = 200;
 
 	// Use this for initialization
 	void Start () {
@@ -31,7 +32,6 @@ public class Arrow : MonoBehaviour {
 			destroyTime--;
 			if (destroyTime == 0) {
 				Destroy (gameObject);
-
 			}
 		}
 		float ownY = transform.position.y;
@@ -41,7 +41,16 @@ public class Arrow : MonoBehaviour {
 			if (ownY <= targetY + tolerance && ownY >= targetY - tolerance && curVelocity.y < 0) {
 				aiCannon.newMiss (transform.position.x - userCannonBase.transform.position.x);
 				givenMiss = true;
-				Debug.Log ("Missed by: " + (transform.position.x - userCannonBase.transform.position.x));
+//				Debug.Log ("Missed by: " + (transform.position.x - userCannonBase.transform.position.x));
+			}
+		}
+		Vector3 ownPos = Camera.main.WorldToScreenPoint (transform.position);
+		if (ownPos.y <= 0 || ownPos.x <= 0 || ownPos.x >= Screen.width) {
+			offScreenTime--;
+			if (offScreenTime == 0) {
+				if (isEnemyArrow) {
+					Destroy (gameObject);
+				}
 			}
 		}
 	}

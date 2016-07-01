@@ -127,11 +127,12 @@ public class AICannon : MonoBehaviour {
 		if (curY > startY) {
 			angle = angle * -1;
 		}
-		if (angle < 65 && angle > 0) {
-			angle = 65;
-		} else if (angle > -165 && angle < 0) {
-			angle = -165;
+		if (angle < 85 && angle > 0) {
+			angle = 85;
+		} else if (angle > 179 && angle > 0) {
+			angle = 179;
 		}
 		transform.eulerAngles = new Vector3 (0, 0, -90 + angle);
+		ownHuman.transform.eulerAngles = new Vector3 (0, 0, 180 + 180 - (180 - angle) / 2);
 	}
 }
