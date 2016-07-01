@@ -21,6 +21,8 @@ public class AICannon : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		stage = 0;
+		startX = transform.position.x;
+		startY = transform.position.y;
 		endX = startX + Random.Range (0.5f, 140);
 		endY = startY - Random.Range (0.5f, 140);
 		right = Camera.main.ScreenToWorldPoint (new Vector3(Screen.width, 0, 0)).x;
@@ -33,26 +35,32 @@ public class AICannon : MonoBehaviour {
 	void Update () {
 
 		if (stage == 0) {
-			startX = transform.position.x;
-			startY = transform.position.y;
 			curX = endX;
 			curY = endY;
 			stage = 1;
 			moveFrames = (int)Random.Range (80, 130);
 			moveFrames = 100;
+//			Debug.Log ("Start from: " + startX + " " + startY);
 			setStartTouch (startX, startY);
+//			Debug.Log ("First update: " + endX + " " + endY);
 			updateTouch (endX, endY);
-			endX = startX + Random.Range (0.5f, 140);
-			endY = startY - Random.Range (0.5f, 140);
+			if (missList [missList.Count - 1] > 0) {
+				endX = endX + Random.Range (-5, 50);
+			}
+			else {
+				endX = endX + Random.Range (-50, 5);
+			}
 		} else if (stage == 1 && moveFrames > 0) {
 			curX = curX + (endX - startX) / moveFrames;
 			curY = curY + (endY - startY) / moveFrames;
+//			Debug.Log ("Update: " + curX + " " + curY);
 			updateTouch (curX, curY);
 			moveFrames--;
 			if (moveFrames == 0) {
 				stage = 2;
 			}
 		} else if (stage == 2) {
+//			Debug.Log ("End from: " + startX + " " + startY + " at: " + endX + " " + endY);
 			endTouch (endX, endY);
 			stage = 3;
 			pauseFrames = (int)Random.Range (20, 40);
