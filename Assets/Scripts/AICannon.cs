@@ -5,7 +5,11 @@ using System.Collections.Generic;
 public class AICannon : MonoBehaviour {
 	public GameObject userCannonBase;
 	public GameObject ownCannonBase;
+	public GameObject ownHumanWithSeat;
 	public GameObject ownHuman;
+	public GameObject leg1AI;
+	public GameObject leg2AI;
+	public GameObject body;
 	public GUIText scoreText;
 	public bool directionRight = false;
 	public Rigidbody2D arrow;
@@ -42,9 +46,7 @@ public class AICannon : MonoBehaviour {
 			stage = 1;
 			moveFrames = (int)Random.Range (80, 130);
 			moveFrames = 100;
-//			Debug.Log ("Start from: " + startX + " " + startY);
 			setStartTouch (startX, startY);
-//			Debug.Log ("First update: " + endX + " " + endY);
 			updateTouch (endX, endY);
 			if (missList [missList.Count - 1] > 0) {
 				endX = endX + Random.Range (-5, 50);
@@ -55,14 +57,12 @@ public class AICannon : MonoBehaviour {
 		} else if (stage == 1 && moveFrames > 0) {
 			curX = curX + (endX - startX) / moveFrames;
 			curY = curY + (endY - startY) / moveFrames;
-//			Debug.Log ("Update: " + curX + " " + curY);
 			updateTouch (curX, curY);
 			moveFrames--;
 			if (moveFrames == 0) {
 				stage = 2;
 			}
 		} else if (stage == 2) {
-//			Debug.Log ("End from: " + startX + " " + startY + " at: " + endX + " " + endY);
 			endTouch (endX, endY);
 			stage = 3;
 			pauseFrames = (int)Random.Range (20, 40);
@@ -71,10 +71,33 @@ public class AICannon : MonoBehaviour {
 				stage = 0;
 			}
 			pauseFrames--;
+		} else if (stage == 4) {
+			if (pauseFrames == 0) {
+				stage = 0;
+				moveToNewPos ();
+			}
+			pauseFrames--;
+		}
+
+		Vector3 tp = Camera.main.WorldToScreenPoint (leg1AI.transform.position);
+		//		tp = leg1AI.transform.position;
+//		Debug.Log (tp.x + " " + tp.y + " " + tp.z);
+		Debug.Log (ownHuman.transform.localPosition);
+//		Debug.Log (leg1AI.transform.eulerAngles.z + " " + leg2AI.transform.eulerAngles.z + " " + body.transform.eulerAngles.z);
+		if (tp.y < 0) {
+			newEnemy ();
 		}
 	}
 
 	public void newEnemy() {
+		stage = 4;
+		pauseFrames = 50;
+
+		score++;
+		scoreText.text = "" + score;
+	}
+
+	public void moveToNewPos() {
 		float boundary = 0.5f;
 		float verticalMax = (top - transform.position.y) * boundary;
 		float verticalMin = (bottom - transform.position.y) * boundary;
@@ -86,11 +109,16 @@ public class AICannon : MonoBehaviour {
 		transform.position = new Vector2(transform.position.x + xChange, transform.position.y + yChange);
 		Vector2 oldOwnCannonBase = ownCannonBase.transform.position;
 		ownCannonBase.transform.position = new Vector2(oldOwnCannonBase.x + xChange, oldOwnCannonBase.y + yChange);
-		Vector2 oldOwnHuman = ownHuman.transform.position;
-		ownHuman.transform.position = new Vector2(oldOwnHuman.x + xChange, oldOwnHuman.y + yChange);
+		Vector2 ownHumanPos = ownCannonBase.transform.position;
+		ownHumanWithSeat.transform.position = new Vector2(ownHumanPos.x, ownHumanPos.y);
+		ownHuman.transform.localPosition = new Vector2(-2.85f, 1.4f);
 
-		score++;
-		scoreText.text = "" + score;
+		leg1AI.transform.eulerAngles = new Vector3 (0, 0, 300);
+		leg2AI.transform.eulerAngles = new Vector3 (0, 0, 311);
+		body.transform.eulerAngles = new Vector3 (0, 0, 345);
+
+		HealthText healthText = ownCannonBase.GetComponent<HealthText> ();
+		healthText.resetHealth ();
 	}
 
 	public void newMiss(float amount) {
@@ -138,6 +166,6 @@ public class AICannon : MonoBehaviour {
 			angle = 179;
 		}
 		transform.eulerAngles = new Vector3 (0, 0, -90 + angle);
-		ownHuman.transform.eulerAngles = new Vector3 (0, 0, 180 + 180 - (180 - angle) / 4);
+		ownHumanWithSeat.transform.eulerAngles = new Vector3 (0, 0, 180 + 180 - (180 - angle) / 4);
 	}
 }

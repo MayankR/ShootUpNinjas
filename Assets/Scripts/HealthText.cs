@@ -27,7 +27,6 @@ public class HealthText : MonoBehaviour {
 			}
 			if (cur == 0) {
 				makeNewEnemy ();
-				resetHealth ();
 			}
 		}
 	}
@@ -41,7 +40,7 @@ public class HealthText : MonoBehaviour {
 		aiCannon.newEnemy ();
 	}
 
-	void resetHealth() {
+	public void resetHealth() {
 		cur = 100;
 		reduce = false;
 		Start ();
