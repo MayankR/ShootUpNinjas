@@ -111,11 +111,11 @@ public class AICannon : MonoBehaviour {
 		ownCannonBase.transform.position = new Vector2(oldOwnCannonBase.x + xChange, oldOwnCannonBase.y + yChange);
 		Vector2 ownHumanPos = ownCannonBase.transform.position;
 		ownHumanWithSeat.transform.position = new Vector2(ownHumanPos.x, ownHumanPos.y);
-		ownHuman.transform.localPosition = new Vector2(-2.85f, 1.4f);
+//		ownHuman.transform.localPosition = new Vector2(-2.85f, 1.4f);
 
-		leg1AI.transform.eulerAngles = new Vector3 (0, 0, 300);
-		leg2AI.transform.eulerAngles = new Vector3 (0, 0, 311);
-		body.transform.eulerAngles = new Vector3 (0, 0, 345);
+//		leg1AI.transform.eulerAngles = new Vector3 (0, 0, 300);
+//		leg2AI.transform.eulerAngles = new Vector3 (0, 0, 311);
+//		body.transform.eulerAngles = new Vector3 (0, 0, 345);
 
 		HealthText healthText = ownCannonBase.GetComponent<HealthText> ();
 		healthText.resetHealth ();
