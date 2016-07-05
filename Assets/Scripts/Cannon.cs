@@ -10,6 +10,8 @@ public class Cannon : MonoBehaviour {
 	public bool user = true;
 	float minAngle = -15, maxAngle = 85;
 	public float gravity = 2.5f;
+	public Animator explosion;
+	int explodeFrames = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -37,6 +39,13 @@ public class Cannon : MonoBehaviour {
 			}
 		}else if (Input.GetMouseButtonUp(0)) {
 			endTouch (Input.mousePosition.x, Input.mousePosition.y);
+		}
+
+		if (explodeFrames > 0) {
+			explodeFrames--;
+			if (explodeFrames == 0) {
+				explosion.SetBool ("doExplode", false); 
+			}
 		}
 	}
 
@@ -81,5 +90,11 @@ public class Cannon : MonoBehaviour {
 			angle = maxAngle;
 		}
 		transform.eulerAngles = new Vector3 (0, 0, -90 + angle);
+	}
+
+	public void dead() {
+		explosion.transform.position = transform.position;
+		explosion.SetBool ("doExplode", true);
+		explodeFrames = 50;
 	}
 }

@@ -40,7 +40,7 @@ public class HealthText : MonoBehaviour {
 
 	void makeNewEnemy() {
 		if (user) {
-//			cannon.dead ();
+			cannon.dead ();
 		} else {
 			aiCannon.newEnemy ();
 		}
