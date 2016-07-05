@@ -27,6 +27,11 @@ public class AICannon : MonoBehaviour {
 	List<float> missList;
 	int score = 0;
 	float gravity = 2.5f;
+	int gameState = 0;
+
+	public void updateState(int n) {
+		gameState = n;
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -45,49 +50,50 @@ public class AICannon : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (gameState == 1) {
 
-		if (stage == 0) {
-			curX = endX;
-			curY = endY;
-			stage = 1;
-			moveFrames = (int)Random.Range (80, 130);
-			moveFrames = 100;
-			setStartTouch (startX, startY);
-			updateTouch (endX, endY);
-			if (missList [missList.Count - 1] > 0) {
-				endX = endX + Random.Range (-5, 50);
+			if (stage == 0) {
+				curX = endX;
+				curY = endY;
+				stage = 1;
+				moveFrames = (int)Random.Range (80, 130);
+				moveFrames = 100;
+				setStartTouch (startX, startY);
+				updateTouch (endX, endY);
+				if (missList [missList.Count - 1] > 0) {
+					endX = endX + Random.Range (-5, 50);
+				} else {
+					endX = endX + Random.Range (-50, 5);
+				}
+			} else if (stage == 1 && moveFrames > 0) {
+				curX = curX + (endX - startX) / moveFrames;
+				curY = curY + (endY - startY) / moveFrames;
+				updateTouch (curX, curY);
+				moveFrames--;
+				if (moveFrames == 0) {
+					stage = 2;
+				}
+			} else if (stage == 2) {
+				endTouch (endX, endY);
+				stage = 3;
+				pauseFrames = (int)Random.Range (20, 40);
+			} else if (stage == 3) {
+				if (pauseFrames == 0) {
+					stage = 0;
+				}
+				pauseFrames--;
+			} else if (stage == 4) {
+				if (pauseFrames == 0) {
+					stage = 0;
+					moveToNewPos ();
+				}
+				pauseFrames--;
 			}
-			else {
-				endX = endX + Random.Range (-50, 5);
-			}
-		} else if (stage == 1 && moveFrames > 0) {
-			curX = curX + (endX - startX) / moveFrames;
-			curY = curY + (endY - startY) / moveFrames;
-			updateTouch (curX, curY);
-			moveFrames--;
-			if (moveFrames == 0) {
-				stage = 2;
-			}
-		} else if (stage == 2) {
-			endTouch (endX, endY);
-			stage = 3;
-			pauseFrames = (int)Random.Range (20, 40);
-		} else if (stage == 3) {
-			if (pauseFrames == 0) {
-				stage = 0;
-			}
-			pauseFrames--;
-		} else if (stage == 4) {
-			if (pauseFrames == 0) {
-				stage = 0;
-				moveToNewPos ();
-			}
-			pauseFrames--;
-		}
 
-		Vector3 tp = Camera.main.WorldToScreenPoint (leg1AI.transform.position);
-		if (tp.y < 0) {
-			newEnemy ();
+			Vector3 tp = Camera.main.WorldToScreenPoint (leg1AI.transform.position);
+			if (tp.y < 0) {
+				newEnemy ();
+			}
 		}
 	}
 

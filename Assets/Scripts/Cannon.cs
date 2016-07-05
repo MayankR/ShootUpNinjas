@@ -12,6 +12,12 @@ public class Cannon : MonoBehaviour {
 	public float gravity = 2.5f;
 	public Animator explosion;
 	int explodeFrames = 0;
+	int gameState = 0;
+	bool startedTouch = false;
+
+	public void updateState(int n) {
+		gameState = n;
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -20,36 +26,40 @@ public class Cannon : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.touchCount > 0) {
-			if (Input.GetTouch (0).phase == TouchPhase.Began) {
-				setStartTouch (Input.GetTouch (0).position.x, Input.GetTouch (0).position.y);
-			} else if (Input.GetTouch (0).phase == TouchPhase.Moved || Input.GetMouseButton(0)) {
-				updateTouch (Input.GetTouch (0).position.x, Input.GetTouch (0).position.y);
-			} else if (Input.GetTouch (0).phase == TouchPhase.Ended) {
-				endTouch (Input.GetTouch (0).position.x, Input.GetTouch (0).position.y);
-			}
-		}
-		else if (Input.GetMouseButton (0)) {
-			if (Input.GetMouseButtonDown (0)) {
-				setStartTouch (Input.mousePosition.x, Input.mousePosition.y);
-			} else if (Input.GetMouseButton(0)) {
-				updateTouch (Input.mousePosition.x, Input.mousePosition.y);
-			} else if (Input.GetMouseButtonUp(0)) {
+		if (gameState == 1) {
+			if (Input.touchCount > 0) {
+				if (Input.GetTouch (0).phase == TouchPhase.Began) {
+					setStartTouch (Input.GetTouch (0).position.x, Input.GetTouch (0).position.y);
+				} else if (Input.GetTouch (0).phase == TouchPhase.Moved || Input.GetMouseButton (0)) {
+					updateTouch (Input.GetTouch (0).position.x, Input.GetTouch (0).position.y);
+				} else if (Input.GetTouch (0).phase == TouchPhase.Ended) {
+					endTouch (Input.GetTouch (0).position.x, Input.GetTouch (0).position.y);
+				}
+			} else if (Input.GetMouseButton (0)) {
+				if (Input.GetMouseButtonDown (0)) {
+					setStartTouch (Input.mousePosition.x, Input.mousePosition.y);
+				} else if (Input.GetMouseButton (0)) {
+					updateTouch (Input.mousePosition.x, Input.mousePosition.y);
+				} else if (Input.GetMouseButtonUp (0)) {
+					endTouch (Input.mousePosition.x, Input.mousePosition.y);
+				}
+			} else if (Input.GetMouseButtonUp (0)) {
 				endTouch (Input.mousePosition.x, Input.mousePosition.y);
 			}
-		}else if (Input.GetMouseButtonUp(0)) {
-			endTouch (Input.mousePosition.x, Input.mousePosition.y);
-		}
 
-		if (explodeFrames > 0) {
-			explodeFrames--;
-			if (explodeFrames == 0) {
-				explosion.SetBool ("doExplode", false); 
+			if (explodeFrames > 0) {
+				explodeFrames--;
+				if (explodeFrames == 0) {
+					explosion.SetBool ("doExplode", false); 
+				}
 			}
 		}
 	}
 
 	void endTouch(float x, float y) {
+		if (!startedTouch) {
+			return;
+		}
 		endX = x;
 		endY = y;
 		Quaternion ownRot = transform.rotation;
@@ -67,9 +77,11 @@ public class Cannon : MonoBehaviour {
 		Vector2 touchLength = new Vector2 (endX - startX, endY - startY);
 //		Debug.Log (touchLength.magnitude);
 		newArrow.velocity = dir.normalized * arrowSpeed * touchLength.magnitude/140;
+		startedTouch = false;
 	}
 
 	void setStartTouch (float x, float y) {
+		startedTouch = true;
 		startX = x;
 		startY = y;
 	}
