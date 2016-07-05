@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class AICannon : MonoBehaviour {
 	public GameObject userCannonBase;
+	public GameObject userCannon;
 	public GameObject ownCannonBase;
 	public GameObject ownHumanWithSeat;
 	public GameObject ownHuman;
@@ -11,6 +12,7 @@ public class AICannon : MonoBehaviour {
 	public GameObject leg2AI;
 	public GameObject body;
 	public GUIText scoreText;
+	public GUIText gravityText;
 	public bool directionRight = false;
 	public Rigidbody2D arrow;
 	float startX, startY;
@@ -23,6 +25,7 @@ public class AICannon : MonoBehaviour {
 	float right, top, bottom;
 	List<float> missList;
 	int score = 0;
+	float gravity = 2.5f;
 
 	// Use this for initialization
 	void Start () {
@@ -80,10 +83,6 @@ public class AICannon : MonoBehaviour {
 		}
 
 		Vector3 tp = Camera.main.WorldToScreenPoint (leg1AI.transform.position);
-		//		tp = leg1AI.transform.position;
-//		Debug.Log (tp.x + " " + tp.y + " " + tp.z);
-		Debug.Log (ownHuman.transform.localPosition);
-//		Debug.Log (leg1AI.transform.eulerAngles.z + " " + leg2AI.transform.eulerAngles.z + " " + body.transform.eulerAngles.z);
 		if (tp.y < 0) {
 			newEnemy ();
 		}
@@ -119,6 +118,8 @@ public class AICannon : MonoBehaviour {
 
 		HealthText healthText = ownCannonBase.GetComponent<HealthText> ();
 		healthText.resetHealth ();
+
+		newGravity ();
 	}
 
 	public void newMiss(float amount) {
@@ -135,6 +136,7 @@ public class AICannon : MonoBehaviour {
 		Vector3 alongCannon = new Vector3 (Mathf.Cos (angle), Mathf.Sin (angle), 0);
 
 		Rigidbody2D newArrow = Instantiate(arrow, transform.position - alongCannon*2, ownRot) as Rigidbody2D;
+		newArrow.gravityScale = gravity;
 		newArrow.transform.localScale = new Vector3 (0.1f, 0.2f, 1.0f);
 		Vector2 dir = new Vector2 (startX - endX, startY - endY);
 
@@ -143,6 +145,14 @@ public class AICannon : MonoBehaviour {
 
 		Arrow myArrow = newArrow.GetComponent<Arrow>();
 		myArrow.isEnemyArrow = true;
+	}
+
+	void newGravity() {
+		float g = Random.Range (1.5f, 4.5f);
+		gravity = g;
+		gravityText.text = "Gravity: " + Mathf.Round (gravity * 100) / 100;
+		Cannon c = userCannon.GetComponent<Cannon> ();
+		c.gravity = gravity;
 	}
 
 	void setStartTouch (float x, float y) {

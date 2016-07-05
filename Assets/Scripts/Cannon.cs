@@ -9,6 +9,7 @@ public class Cannon : MonoBehaviour {
 	public bool directionRight = true;
 	public bool user = true;
 	float minAngle = -15, maxAngle = 85;
+	public float gravity = 2.5f;
 
 	// Use this for initialization
 	void Start () {
@@ -50,6 +51,7 @@ public class Cannon : MonoBehaviour {
 		Vector3 alongCannon = new Vector3 (Mathf.Cos (angle), Mathf.Sin (angle), 0);
 
 		Rigidbody2D newArrow = Instantiate(arrow, transform.position + alongCannon*2, ownRot) as Rigidbody2D;
+		newArrow.gravityScale = gravity;
 		newArrow.transform.localScale = new Vector3 (0.1f, 0.2f, 1.0f);
 		Vector2 dir = new Vector2 (Mathf.Cos (angle), Mathf.Sin (angle));
 
