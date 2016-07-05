@@ -63,14 +63,27 @@ public class Arrow : MonoBehaviour {
 		if (!damageDone) {
 			if (name == "head") {
 				HealthText hText = aiCannonBase.GetComponent<HealthText> ();
-				hText.reduceBy (70);
+				hText.reduceBy (50 + (int)Random.Range(-10, 10));
 				damageDone = true;
 			} else if (name == "body") {
 				HealthText hText = aiCannonBase.GetComponent<HealthText> ();
-				hText.reduceBy (50);
+				hText.reduceBy (40 + (int)Random.Range(-5, 5));
 				damageDone = true;
 			} else if (name == "leg1" || name == "leg2") {
 				HealthText hText = aiCannonBase.GetComponent<HealthText> ();
+				hText.reduceBy (20 + (int)Random.Range(-5, 5));
+				damageDone = true;
+			}
+			else if (name == "headUser") {
+				HealthText hText = userCannonBase.GetComponent<HealthText> ();
+				hText.reduceBy (70);
+				damageDone = true;
+			} else if (name == "bodyUser") {
+				HealthText hText = userCannonBase.GetComponent<HealthText> ();
+				hText.reduceBy (50);
+				damageDone = true;
+			} else if (name == "leg1User" || name == "leg2User") {
+				HealthText hText = userCannonBase.GetComponent<HealthText> ();
 				hText.reduceBy (40);
 				damageDone = true;
 			}

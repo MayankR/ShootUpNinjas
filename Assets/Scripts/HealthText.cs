@@ -7,6 +7,8 @@ public class HealthText : MonoBehaviour {
 	int reduceByQty = 0;
 	bool reduce = false;
 	public AICannon aiCannon;
+	public Cannon cannon;
+	public bool user = false;
 
 	// Use this for initialization
 	void Start () {
@@ -37,7 +39,11 @@ public class HealthText : MonoBehaviour {
 	}
 
 	void makeNewEnemy() {
-		aiCannon.newEnemy ();
+		if (user) {
+//			cannon.dead ();
+		} else {
+			aiCannon.newEnemy ();
+		}
 	}
 
 	public void resetHealth() {

@@ -13,6 +13,7 @@ public class AICannon : MonoBehaviour {
 	public GameObject body;
 	public GUIText scoreText;
 	public GUIText gravityText;
+	public Animator explosion;
 	public bool directionRight = false;
 	public Rigidbody2D arrow;
 	float startX, startY;
@@ -38,6 +39,8 @@ public class AICannon : MonoBehaviour {
 		top = Camera.main.ScreenToWorldPoint (new Vector3(0, Screen.height, 0)).y;
 		bottom = Camera.main.ScreenToWorldPoint (new Vector3(0, 0, 0)).y;
 		missList = new List<float> ();
+
+		explosion.SetBool ("doExplode", false);
 	}
 	
 	// Update is called once per frame
@@ -94,6 +97,9 @@ public class AICannon : MonoBehaviour {
 
 		score++;
 		scoreText.text = "" + score;
+
+		explosion.transform.position = transform.position;
+		explosion.SetBool ("doExplode", true);
 	}
 
 	public void moveToNewPos() {
@@ -118,6 +124,8 @@ public class AICannon : MonoBehaviour {
 
 		HealthText healthText = ownCannonBase.GetComponent<HealthText> ();
 		healthText.resetHealth ();
+
+		explosion.SetBool ("doExplode", false);
 
 		newGravity ();
 	}
