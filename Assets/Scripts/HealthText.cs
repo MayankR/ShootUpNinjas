@@ -38,6 +38,7 @@ public class HealthText : MonoBehaviour {
 		reduce = true;
 	}
 
+	//Called when current health text value goes to 0
 	void makeNewEnemy() {
 		if (user) {
 			cannon.dead ();

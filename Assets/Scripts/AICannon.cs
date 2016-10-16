@@ -31,6 +31,15 @@ public class AICannon : MonoBehaviour {
 
 	public void updateState(int n) {
 		gameState = n;
+		if (n == 1) {
+			resetGame ();
+		}
+	}
+
+	void resetGame() {
+		score = 0;
+		scoreText.text = "" + score;
+		moveToNewPos ();
 	}
 
 	// Use this for initialization
@@ -191,5 +200,9 @@ public class AICannon : MonoBehaviour {
 		}
 		transform.eulerAngles = new Vector3 (0, 0, -90 + angle);
 		ownHumanWithSeat.transform.eulerAngles = new Vector3 (0, 0, 180 + 180 - (180 - angle) / 4);
+	}
+
+	public int getScore() {
+		return score;
 	}
 }

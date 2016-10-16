@@ -2,15 +2,16 @@
 using System.Collections;
 
 public class Cannon : MonoBehaviour {
-	float startX, startY;
-	float endX, endY;
 	public Rigidbody2D arrow;
-	float arrowSpeed = 18.0f;
-	public bool directionRight = true;
-	public bool user = true;
-	float minAngle = -15, maxAngle = 85;
 	public float gravity = 2.5f;
 	public Animator explosion;
+	public bool directionRight = true;
+	public bool user = true;
+	public GameManager gameManager;
+	float startX, startY;
+	float endX, endY;
+	float arrowSpeed = 18.0f;
+	float minAngle = -15, maxAngle = 85;
 	int explodeFrames = 0;
 	int gameState = 0;
 	bool startedTouch = false;
@@ -47,11 +48,12 @@ public class Cannon : MonoBehaviour {
 				endTouch (Input.mousePosition.x, Input.mousePosition.y);
 			}
 
-			if (explodeFrames > 0) {
-				explodeFrames--;
-				if (explodeFrames == 0) {
-					explosion.SetBool ("doExplode", false); 
-				}
+
+		}
+		if (explodeFrames > 0) {
+			explodeFrames--;
+			if (explodeFrames <= 0) {
+				explosion.SetBool ("doExplode", false); 
 			}
 		}
 	}
@@ -104,9 +106,12 @@ public class Cannon : MonoBehaviour {
 		transform.eulerAngles = new Vector3 (0, 0, -90 + angle);
 	}
 
+	//User is dead. Called by health text.
 	public void dead() {
+		Debug.Log ("Dead called");
 		explosion.transform.position = transform.position;
 		explosion.SetBool ("doExplode", true);
 		explodeFrames = 50;
+		gameManager.playerDead ();
 	}
 }
