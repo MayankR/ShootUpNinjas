@@ -18,8 +18,8 @@ public class AICannon : MonoBehaviour {
 	public Rigidbody2D arrow;
 	public GameObject okayFace;
 	public GameObject whyFace;
-	public GameObject winFace;
-	public GameObject kiddingFace;
+	public GameObject winUserFace;
+	public GameObject whyUserFace;
 	float startX, startY;
 	float curX, curY;
 	float endX, endY;
@@ -61,6 +61,8 @@ public class AICannon : MonoBehaviour {
 		explosion.SetBool ("doExplode", false);
 		toggleAIMeme ("okay", false);
 		toggleAIMeme ("why", false);
+		toggleUserMeme ("win", false);
+		toggleUserMeme ("why", false);
 	}
 	
 	// Update is called once per frame
@@ -115,7 +117,7 @@ public class AICannon : MonoBehaviour {
 	public void toggleAIMeme(string name, bool show) {
 		if (show) {
 			Vector3 basePos = ownCannonBase.transform.position;
-			Vector3 facePos = new Vector3 (basePos.x, basePos.y + 2.7, basePos.z);
+			Vector3 facePos = new Vector3 (basePos.x, basePos.y + 2.7f, basePos.z);
 			if (name == "okay") {
 				okayFace.transform.position = facePos;
 			} else if (name == "why") {
@@ -128,9 +130,32 @@ public class AICannon : MonoBehaviour {
 			} else if (name == "why") {
 				whyFace.transform.position = inviPos;
 			} else if (name == "win") {
-				winFace.transform.position = inviPos;
+//				winFace.transform.position = inviPos;
 			} else if (name == "kidding") {
-				kiddingFace.transform.position = inviPos;
+//				kiddingFace.transform.position = inviPos;
+			}
+		}
+	}
+
+	public void toggleUserMeme(string name, bool show) {
+		if (show) {
+			Vector3 basePos = userCannonBase.transform.position;
+			Vector3 facePos = new Vector3 (basePos.x, basePos.y + 2.7f, basePos.z);
+			if (name == "win") {
+				winUserFace.transform.position = facePos;
+			} else if (name == "why") {
+				whyUserFace.transform.position = facePos;
+			}
+		} else {
+			Vector3 inviPos = new Vector3 (11, 11, 11);
+			if (name == "okay") {
+//				okayFace.transform.position = inviPos;
+			} else if (name == "why") {
+				whyUserFace.transform.position = inviPos;
+			} else if (name == "win") {
+				winUserFace.transform.position = inviPos;
+			} else if (name == "kidding") {
+//				kiddingFace.transform.position = inviPos;
 			}
 		}
 	}
@@ -150,6 +175,7 @@ public class AICannon : MonoBehaviour {
 		} else {
 			toggleAIMeme ("okay", true);
 		}
+		toggleUserMeme ("win", true);
 	}
 
 	public void moveToNewPos() {
@@ -177,11 +203,17 @@ public class AICannon : MonoBehaviour {
 
 		explosion.SetBool ("doExplode", false);
 
-		if (score % 4 == 0) {
-			toggleAIMeme ("why", false);
-		} else {
-			toggleAIMeme ("okay", false);
-		}
+//		if (score % 4 == 0) {
+//			toggleAIMeme ("why", false);
+//		} else {
+//			toggleAIMeme ("okay", false);
+//		}
+//		toggleUserMeme ("win", false);
+
+		toggleAIMeme ("okay", false);
+		toggleAIMeme ("why", false);
+		toggleUserMeme ("win", false);
+		toggleUserMeme ("why", false);
 
 		newGravity ();
 	}
