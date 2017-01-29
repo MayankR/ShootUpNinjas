@@ -15,9 +15,8 @@ public class Arrow : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		Rigidbody2D rb = GetComponent<Rigidbody2D> ();

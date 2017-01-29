@@ -8,11 +8,15 @@ public class GameManager : MonoBehaviour {
 	public GameObject userCannonBase;
 	public AICannon aiCannon;
 	public Cannon cannon;
+	public GUIText highText;
 	int gameState = 0;
 
 	// Use this for initialization
 	void Start () {
 		gameState = 0;
+//		highText.fontSize = 0;
+//		highText.transform.localScale = new Vector3 (0, 0, 0);
+		highText.text = "";
 		replayButton.transform.localScale = new Vector3 (0, 0, 0);
 		replayButton.transform.position = new Vector3 (200, 200, -20);
 	}
@@ -29,6 +33,9 @@ public class GameManager : MonoBehaviour {
 						Debug.Log( hitInfo.transform.gameObject.name );
 						string name = hitInfo.transform.gameObject.name;
 						if (name == "playButton" || name == "replayButton") {
+//							highText.transform.localScale = new Vector3 (0, 0, 0);
+//							highText.fontSize = 0;
+							highText.text = "";
 							updateState (1);
 						}
 					}
@@ -43,6 +50,7 @@ public class GameManager : MonoBehaviour {
 					Debug.Log( hitInfo.transform.gameObject.name );
 					string name = hitInfo.transform.gameObject.name;
 					if (name == "playButton" || name == "replayButton") {
+						highText.fontSize = 0;
 						updateState (1);
 					}
 				}
@@ -87,6 +95,9 @@ public class GameManager : MonoBehaviour {
 		Debug.Log ("Current Score: " + curScore);
 		int highestScore = SaveData.loadScore ();
 		Debug.Log ("Highest Score: " + highestScore);
+		highText.transform.localScale = new Vector3 (0.5f, 0.2f, 0.0f);
+		highText.fontSize = 30;
+		highText.text = "Highest Score: " + highestScore;
 		if (curScore <= highestScore) {
 			return;
 		} else {

@@ -16,6 +16,10 @@ public class AICannon : MonoBehaviour {
 	public Animator explosion;
 	public bool directionRight = false;
 	public Rigidbody2D arrow;
+	public GameObject okayFace;
+	public GameObject whyFace;
+	public GameObject winFace;
+	public GameObject kiddingFace;
 	float startX, startY;
 	float curX, curY;
 	float endX, endY;
@@ -55,6 +59,8 @@ public class AICannon : MonoBehaviour {
 		missList = new List<float> ();
 
 		explosion.SetBool ("doExplode", false);
+		toggleAIMeme ("okay", false);
+		toggleAIMeme ("why", false);
 	}
 	
 	// Update is called once per frame
@@ -106,6 +112,29 @@ public class AICannon : MonoBehaviour {
 		}
 	}
 
+	public void toggleAIMeme(string name, bool show) {
+		if (show) {
+			Vector3 basePos = ownCannonBase.transform.position;
+			Vector3 facePos = new Vector3 (basePos.x, basePos.y + 2.7, basePos.z);
+			if (name == "okay") {
+				okayFace.transform.position = facePos;
+			} else if (name == "why") {
+				whyFace.transform.position = facePos;
+			}
+		} else {
+			Vector3 inviPos = new Vector3 (10, 10, 10);
+			if (name == "okay") {
+				okayFace.transform.position = inviPos;
+			} else if (name == "why") {
+				whyFace.transform.position = inviPos;
+			} else if (name == "win") {
+				winFace.transform.position = inviPos;
+			} else if (name == "kidding") {
+				kiddingFace.transform.position = inviPos;
+			}
+		}
+	}
+
 	public void newEnemy() {
 		stage = 4;
 		pauseFrames = 50;
@@ -115,6 +144,12 @@ public class AICannon : MonoBehaviour {
 
 		explosion.transform.position = transform.position;
 		explosion.SetBool ("doExplode", true);
+
+		if (score % 3 == 0) {
+			toggleAIMeme ("why", true);
+		} else {
+			toggleAIMeme ("okay", true);
+		}
 	}
 
 	public void moveToNewPos() {
@@ -141,6 +176,12 @@ public class AICannon : MonoBehaviour {
 		healthText.resetHealth ();
 
 		explosion.SetBool ("doExplode", false);
+
+		if (score % 4 == 0) {
+			toggleAIMeme ("why", false);
+		} else {
+			toggleAIMeme ("okay", false);
+		}
 
 		newGravity ();
 	}
